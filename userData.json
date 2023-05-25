@@ -3,6 +3,11 @@
 		"userName": "root",
 		"passWord": "abcd1234",
 		"isSuperVisor": 1
+	},
+	{
+		"userName": "test",
+		"passWord": "abcd1234",
+		"isSuperVisor": 0
 	}
 	
 ]

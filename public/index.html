@@ -119,22 +119,33 @@
   </main>
   <script>
     async function check() {
+      let loginConfig = {}
       var userDataGetResult = await $.ajax({
         type: "get",
-        url: "/test/check",
+        url: "/check",
         contentType: "application/json",
       });
       for (i = 0; i < userDataGetResult.length; i++) {
         var inputUserName = $("#floatingInput").prop("value")
         var inputPassWord = $("#floatingPassword").prop("value")
         if (inputUserName === userDataGetResult[i].userName) {
-          inputPassWord === userDataGetResult[i].passWord
-            ? (alert("username ,password ok"), window.location = "/main.html")
-            : (alert("password is wrong"))
+          if (inputPassWord === userDataGetResult[i].passWord) {
+            loginConfig.message = "login success"
+            var userLoginConfig = userDataGetResult[i]
+            sessionStorage.clear()
+            sessionStorage.setItem("userName", userLoginConfig.userName,"isSupervisor",userLoginConfig.isSuperVisor);
+            sessionStorage.setItem("isSupervisor",userLoginConfig.isSuperVisor);
+            window.location = "/main.html"
+            break;
+          } else {
+            loginConfig.message = "username or password is wrong"
+            break;
+          }
         } else {
-          alert("username is wrong")
+          loginConfig.message = "username or password is wrong"
         }
       }
+      alert(loginConfig.message)
     }
   </script>
 
