@@ -35,6 +35,8 @@ app.post("/checkIn", function (req, res) {
 	checkInHistory.push(item);
 	console.log(moment().startOf('day').set('hours', 9))
 	//設置簽到時間
+	console.log(moment().startOf('day').set('hours', 17))
+	//設置簽退時間
 	console.log(moment())
 	fs.writeFileSync("./attendanceData.json", JSON.stringify(checkInHistory, null, "\t"));
 	res.send("row inserted.");
