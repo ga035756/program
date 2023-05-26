@@ -3,5 +3,17 @@
 		"checkInTime": "2023-05-25 15:49:36",
 		"userName": "root",
 		"checkInStatus": ""
+	},
+	{
+		"checkInTime": "2023-05-26 16:05:40",
+		"checkOutTime": " ",
+		"userName": "test",
+		"checkInStatus": "遲到"
+	},
+	{
+		"checkInTime": "2023-05-26 16:20:22",
+		"checkOutTime": "",
+		"userName": "root",
+		"checkInStatus": "遲到"
 	}
 ]

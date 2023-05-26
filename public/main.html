@@ -166,8 +166,8 @@
               出缺勤管理
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-              <li><a class="dropdown-item" id="checkIn" style="display:none;" onclick="checkIn()">上班打卡</a></li>
-              <li><a class="dropdown-item" href="#">出勤紀錄</a></li>
+              <li><a class="dropdown-item" id="checkIn" style="display:none;" onclick="checkIn()">簽到簽退系統</a></li>
+              <li><a class="dropdown-item" onclick="checkInHistory()">出勤紀錄</a></li>
               <li><a class="dropdown-item" href="#">請假申請</a></li>
             </ul>
           </div>
@@ -223,32 +223,92 @@
       let checkinTime = moment().format('MMMM Do YYYY, h:mm:ss a')
       let checkInHtml =
         `<div class="card-header">
-        出缺勤管理>上班打卡
+        出缺勤管理>簽到簽退系統
       </div>
       <div class="card-body">
         <h5 class="card-title">現在時間</h5>
-        <p class="card-text">${checkinTime}</p>
-        <a onclick="addCheckIn()" class="btn btn-primary">上班簽到</a>
+        <p class="card-text" id="now">${checkinTime}</p>
+        <a onclick="addCheckIn()" class="btn btn-primary">簽到</a>
+        <a onclick="checkOut()" class="btn btn-danger">簽退</a>
       </div>
       <div class="card-footer text-muted">
         <a id="ipType">${ipcheckResult}</a>
       </div>`
       $("#opreationInformation").empty()
       $("#opreationInformation").append(checkInHtml);
+      // window.setInterval($("#now").text(checkinTime))
+      // window.setInterval(console.log(checkinTime),5000)
     }
 
-     function addCheckIn () {
-    
-      let checkInUser = {
-        userName:sessionStorage.getItem("userName")
-      }
-      var checkInResult =  $.ajax({
+    function addCheckIn() {
+
+      let checkInUser = { userName: sessionStorage.getItem("userName") }
+      var checkInResult = $.ajax({
         type: "post",
         url: "/checkIn",
         contentType: "application/json",
-        data: JSON.stringify(checkInUser) 
+        data: JSON.stringify(checkInUser),
+        success: function (res) {
+          alert(res);
+        }
       });
-      console.log(checkInResult);
+      // let checkInMessage = JSON.stringify(checkInResult)
+      // console.log(checkInMessage,checkInResult);
+      // alert(checkInMessage)
+    }
+
+    function checkOut() {
+      $.ajax({
+        type: "put",
+        url: "/checkOut/" + sessionStorage.getItem("userName"),
+        contentType: "application/json",
+        success:function(res){
+          alert(res)
+        }
+      })
+    }
+
+    function checkInHistory() {
+      let trAddCheckInHistoryHtml = ``
+      let checkInHistoryFromServer = $.ajax({
+        type: "get",
+        url: "getCheckInHistory/" + sessionStorage.getItem("userName"),
+        contentType: "application/json",
+        success: function (res) {
+          $.each(res, function (indax, item) {
+            trAddCheckInHistoryHtml +=
+              `<tr>
+              <td>${item.userName}</td>
+              <td>${item.checkInTime}</td>
+              <td>${item.checkOutTime}</td>
+              <td>${item.checkInStatus}</td>
+              </tr>`
+          })
+          let checkInHistoryHtml =
+            `<div class="card-header">
+        出缺勤管理>出勤紀錄
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+  <thead class="table-light">
+    <td>使用者名稱</td>
+    <td>簽到時間</td>
+    <td>簽退時間</td>
+    <td>簽到狀態</td>
+  </thead>
+  <tbody>${trAddCheckInHistoryHtml}</tbody>
+</table>
+      </div>
+      <div class="card-footer text-muted">
+        <a id="ipType">${ipcheckResult}</a>
+      </div>`
+
+          $("#opreationInformation").empty()
+          $("#opreationInformation").append(checkInHistoryHtml);
+        }
+      })
+
+
     }
 
   </script>

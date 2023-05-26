@@ -24,24 +24,55 @@ app.get("/check", function (req, res) {
 	//登入方法
 })
 app.post("/checkIn", function (req, res) {
-
+	let checkInTime = moment().startOf('day').set('hours', 9)//設置簽到時間
+	let checkOutTime = moment().startOf('day').set('hours', 17)//設置簽退時間
+	let checkInTimeForUser = moment().format('YYYY-MM-DD HH:mm:ss')
+	let checkInStatus = ""
+	let checkInMessage = ""
+	let lateTime = moment().diff(checkInTime, 'minutes')
+	checkInTime.isBefore(moment().format('YYYY-MM-DD HH:mm:ss'))
+		? (checkInStatus = "遲到", checkInMessage = "你已遲到 " + lateTime + " 分鐘")
+		: (checkInStatus = "正常")
 	var data = fs.readFileSync(attendanceDataFileName);
 	var checkInHistory = JSON.parse(data);
 	var item = {
-		"checkInTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+		"checkInTime": checkInTimeForUser,
+		"checkOutTime": "",
 		"userName": req.body.userName,
-		"checkInStatus": ""
+		"checkInStatus": `${checkInStatus}`
 	};
-	checkInHistory.push(item);
-	console.log(moment().startOf('day').set('hours', 9))
-	//設置簽到時間
-	console.log(moment().startOf('day').set('hours', 17))
-	//設置簽退時間
-	console.log(moment())
+
+	let doubleCheck = []
+	checkInHistory.map((data) => {
+		if (data.userName === req.body.userName)
+			doubleCheck.push(moment(data.checkInTime).isBetween(moment().startOf('day'), moment().endOf('day')))
+	})//檢查是否重複簽到
+	let checkResult = doubleCheck.some(e => e === true)
+	checkResult ? (checkInMessage = "今天簽到過了喔") : (checkInHistory.push(item))
 	fs.writeFileSync("./attendanceData.json", JSON.stringify(checkInHistory, null, "\t"));
-	res.send("row inserted.");
+	res.send(checkInMessage);
 })
 
+app.put("/checkOut/:userName", function (req, res) {
+	var data = fs.readFileSync(attendanceDataFileName);
+	var checkInHistoryData = JSON.parse(data);
+	console.log(req.params.userName);
+})
+
+//取的出勤紀錄by user
+app.get("/getCheckInHistory/:userName", function (req, res) {
+	let userName = req.params.userName
+	var data = fs.readFileSync(attendanceDataFileName);
+	var checkInHistoryData = JSON.parse(data);
+	let checkInHistoryDataByUser = [];
+	checkInHistoryData.foreach((data) => {
+		data.userName === userName && checkInHistoryDataByUser.push(data)
+	})
+	res.set('Content-type', 'application/json');
+	userName != "root"
+		? (res.send(JSON.stringify(checkInHistoryDataByUser)))
+		: (res.send(JSON.stringify(checkInHistoryData)))
+})
 
 
 
