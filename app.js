@@ -25,7 +25,6 @@ app.get("/check", function (req, res) {
 })
 app.post("/checkIn", function (req, res) {
 	let checkInTime = moment().startOf('day').set('hours', 9)//設置簽到時間
-	let checkOutTime = moment().startOf('day').set('hours', 17)//設置簽退時間
 	let checkInTimeForUser = moment().format('YYYY-MM-DD HH:mm:ss')
 	let checkInStatus = ""
 	let checkInMessage = ""
@@ -55,17 +54,44 @@ app.post("/checkIn", function (req, res) {
 
 app.put("/checkOut/:userName", function (req, res) {
 	var data = fs.readFileSync(attendanceDataFileName);
-	var checkInHistoryData = JSON.parse(data);
-	console.log(req.params.userName);
+	var checkOutHistoryData = JSON.parse(data);
+	let checkOutMessage = ""
+	let checkOutTime = moment().startOf('day').set('hours', 17)//設置簽退時間
+	try {
+		checkOutHistoryData.forEach(data => {
+			if (data.userName === req.params.userName && moment(data.checkInTime).isBetween(moment().startOf('day'), moment().endOf('day'))) {
+				if (data.checkOutTime === "") {
+					data.checkOutTime = moment().format('YYYY-MM-DD HH:mm:ss')
+
+					moment(data.checkOutHistoryData).isBefore(checkOutTime)
+						? (data.checkOutStatus = "早退", checkOutMessage = "你今日早退囉")
+						: (data.checkOutStatus = "正常", checkOutMessage = "已正常完成簽退")		
+						throw "breakException"
+				} else {
+					checkOutMessage = "今日已簽退過了喔"
+					throw "breakException"
+				}
+			} else {
+				checkOutMessage = "今日尚未簽到"
+			}
+		})
+	} catch (e) {
+		if (e !== "breakException") throw e;
+	}
+	// console.log(checkOutMessage);
+	res.send(checkOutMessage);
+	fs.writeFileSync("./attendanceData.json", JSON.stringify(checkOutHistoryData, null, "\t"));
+	// console.log(req.params.userName);
+	// console.log(checkOutMessage);
 })
 
-//取的出勤紀錄by user
+//取得出勤紀錄by user
 app.get("/getCheckInHistory/:userName", function (req, res) {
 	let userName = req.params.userName
 	var data = fs.readFileSync(attendanceDataFileName);
 	var checkInHistoryData = JSON.parse(data);
 	let checkInHistoryDataByUser = [];
-	checkInHistoryData.foreach((data) => {
+	checkInHistoryData.map((data) => {
 		data.userName === userName && checkInHistoryDataByUser.push(data)
 	})
 	res.set('Content-type', 'application/json');

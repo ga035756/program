@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.111.3">
-  <title>Signin page by Bootstrap v5.3</title>
+  <title>Login page</title>
   <link rel="stylesheet" href="./css/bootstrap.css">
   <script src="./js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -92,10 +92,10 @@
   <link href="../css/sign-in.css" rel="stylesheet">
 </head>
 
-<body class="text-center">
+<body class="text-center bg-info">
   <main class="form-signin w-50 m-auto">
     <form>
-      <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+      <img class="mb-4" src="./img/logo.jpg" alt="" width="72" height="72">
       <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
       <div class="form-floating">
@@ -112,11 +112,32 @@
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
-      <a onclick="check()" class="w-100 btn btn-lg btn-primary">Sign in</a>
+      <button type="button" onclick="check()" class="btn btn-primary w-100 btn-lg" data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop">
+        Sign in
+      </button>
       <p class="mt-5 mb-3 text-body-secondary">&copy; 2023</p>
     </form>
 
   </main>
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content ">
+        <div class="modal-header bg-danger text-white">
+          <h1 class="modal-title fs-5 " id="staticBackdropLabel">111</h1>
+          <button type="button" id="btnClose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="confrimLogin" class="btn btn-primary fade">確認登入</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     async function check() {
       let loginConfig = {}
@@ -133,19 +154,30 @@
             loginConfig.message = "login success"
             var userLoginConfig = userDataGetResult[i]
             sessionStorage.clear()
-            sessionStorage.setItem("userName", userLoginConfig.userName,"isSupervisor",userLoginConfig.isSuperVisor);
-            sessionStorage.setItem("isSupervisor",userLoginConfig.isSuperVisor);
-            window.location = "/main.html"
+            sessionStorage.setItem("userName", userLoginConfig.userName, "isSupervisor", userLoginConfig.isSuperVisor);
+            sessionStorage.setItem("isSupervisor", userLoginConfig.isSuperVisor);
+            modal_title = "登入成功提示"
+            $("#confrimLogin").removeClass("fade")
+            $(".modal-header").removeClass("bg-danger")
+            $(".modal-header").addClass("bg-primary")
+            $(".btn-secondary").hide()
+            $(".btn-close").hide()
+            $("#confrimLogin").click(function () {
+              window.location = "/main.html"
+            })
             break;
           } else {
             loginConfig.message = "username or password is wrong"
+            modal_title = "登入錯誤提示"
             break;
           }
         } else {
           loginConfig.message = "username or password is wrong"
+          modal_title = "登入錯誤提示"
         }
       }
-      alert(loginConfig.message)
+      $(".modal-body").text(loginConfig.message)
+      $(".modal-title").text(modal_title)
     }
   </script>
 

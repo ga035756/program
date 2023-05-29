@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.111.3">
-  <title>Sidebars · Bootstrap v5.3</title>
+  <title>員工打卡系統</title>
   <link rel="stylesheet" href="./css/bootstrap.css">
   <script src="./js/sidebars.js"></script>
   <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -187,14 +187,19 @@
     </div>
 
     <div class="b-example-divider b-example-vr"></div>
-    <div class="card text-center" id="opreationInformation">
+    <div class="card text-center container-fluid" id="opreationInformation">
       <div class="card-header">
-        Featured
+        打卡系統Demo
       </div>
       <div class="card-body">
         <h5 class="card-title">Special title treatment</h5>
         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          Launch static backdrop modal
+        </button>
+        
+        <!-- Modal -->
+      
       </div>
       <div class="card-footer text-muted">
         <a id="ipType"></a>
@@ -202,12 +207,30 @@
     </div>
   </main>
 
-
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content ">
+        <div class="modal-header bg-success text-white">
+          <h1 class="modal-title fs-5 " id="staticBackdropLabel">111</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <script>
     const companyIP = "114.33.38.102"
     let ipcheckResult = ""
+    let intervalClock = null;
+    let intervalClockList = []
     function getIP(json) {
       let clientIP = json.ip
       let isSupersior = sessionStorage.getItem("isSupervisor")
@@ -228,8 +251,10 @@
       <div class="card-body">
         <h5 class="card-title">現在時間</h5>
         <p class="card-text" id="now">${checkinTime}</p>
-        <a onclick="addCheckIn()" class="btn btn-primary">簽到</a>
-        <a onclick="checkOut()" class="btn btn-danger">簽退</a>
+        <button type="button" onclick="addCheckIn()"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          簽到</button>
+        <button type="button" onclick="checkOut()"  class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          簽退</button>
       </div>
       <div class="card-footer text-muted">
         <a id="ipType">${ipcheckResult}</a>
@@ -237,7 +262,8 @@
       $("#opreationInformation").empty()
       $("#opreationInformation").append(checkInHtml);
       // window.setInterval($("#now").text(checkinTime))
-      // window.setInterval(console.log(checkinTime),5000)
+      intervalClock = setInterval(checkIn, 1000)
+      intervalClockList.push(intervalClock)
     }
 
     function addCheckIn() {
@@ -249,7 +275,9 @@
         contentType: "application/json",
         data: JSON.stringify(checkInUser),
         success: function (res) {
-          alert(res);
+          $(".modal-body").text(res)
+          $(".modal-title").text('簽到提示')
+          // alert(res);
         }
       });
       // let checkInMessage = JSON.stringify(checkInResult)
@@ -262,13 +290,21 @@
         type: "put",
         url: "/checkOut/" + sessionStorage.getItem("userName"),
         contentType: "application/json",
-        success:function(res){
-          alert(res)
+        success: function (res) {
+          $(".modal-body").text(res)
+          $(".modal-title").text('簽退提示')
         }
       })
     }
 
     function checkInHistory() {
+      // console.log(intervalClockList);
+      // clearInterval(intervalClock)
+      intervalClockList.forEach((item, index) => {
+        clearInterval(item)
+      })
+      intervalClockList = []
+      intervalClock = 0;
       let trAddCheckInHistoryHtml = ``
       let checkInHistoryFromServer = $.ajax({
         type: "get",
@@ -282,6 +318,7 @@
               <td>${item.checkInTime}</td>
               <td>${item.checkOutTime}</td>
               <td>${item.checkInStatus}</td>
+              <td>${item.checkOutStatus}</td>
               </tr>`
           })
           let checkInHistoryHtml =
@@ -295,6 +332,7 @@
     <td>簽到時間</td>
     <td>簽退時間</td>
     <td>簽到狀態</td>
+    <td>簽退狀態</td>
   </thead>
   <tbody>${trAddCheckInHistoryHtml}</tbody>
 </table>
