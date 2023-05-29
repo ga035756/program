@@ -14,7 +14,7 @@
 	{
 		"checkInTime": "",
 		"checkOutTime": "2023-05-29 10:51:08",
-		"userName": "root",
+		"userName": "test",
 		"checkInStatus": "遲到"
 	},
 	{
@@ -22,13 +22,83 @@
 		"checkOutTime": "2023-05-29 14:14:28",
 		"userName": "root",
 		"checkInStatus": "遲到",
+		"checkOutStatus": "正常"
+	},
+	{
+		"checkInTime": "2023-05-20 11:56:40",
+		"checkOutTime": "2023-05-20 14:01:28",
+		"userName": "test",
+		"checkInStatus": "正常",
+		"checkOutStatus": "正常"
+	},
+	{
+		"checkInTime": "2023-05-21 10:51:41",
+		"checkOutTime": "2023-05-21 14:14:28",
+		"userName": "root",
+		"checkInStatus": "遲到",
+		"checkOutStatus": "正常"
+	},
+	{
+		"checkInTime": "2023-05-22 10:51:41",
+		"checkOutTime": "2023-05-22 14:14:28",
+		"userName": "root",
+		"checkInStatus": "遲到",
 		"checkOutStatus": "早退"
 	},
 	{
-		"checkInTime": "2023-05-29 11:56:40",
-		"checkOutTime": "2023-05-29 14:01:28",
-		"userName": "test",
+		"checkInTime": "2023-05-23 10:51:41",
+		"checkOutTime": "2023-05-23 14:14:28",
+		"userName": "root",
 		"checkInStatus": "遲到",
+		"checkOutStatus": "正常"
+	},
+	{
+		"checkInTime": "2023-05-24 10:51:41",
+		"checkOutTime": "2023-05-24 14:14:28",
+		"userName": "root",
+		"checkInStatus": "遲到",
+		"checkOutStatus": "早退"
+	},
+	{
+		"checkInTime": "2023-05-25 10:51:41",
+		"checkOutTime": "2023-05-25 14:14:28",
+		"userName": "root",
+		"checkInStatus": "遲到",
+		"checkOutStatus": "正常"
+	},
+	{
+		"checkInTime": "2023-05-26 10:51:41",
+		"checkOutTime": "2023-05-26 14:14:28",
+		"userName": "root",
+		"checkInStatus": "正常",
+		"checkOutStatus": "早退"
+	},
+	{
+		"checkInTime": "2023-05-21 10:51:41",
+		"checkOutTime": "2023-05-21 14:14:28",
+		"userName": "root",
+		"checkInStatus": "遲到",
+		"checkOutStatus": "正常"
+	},
+	{
+		"checkInTime": "2023-05-21 10:51:41",
+		"checkOutTime": "2023-05-21 14:14:28",
+		"userName": "root",
+		"checkInStatus": "正常",
+		"checkOutStatus": "早退"
+	},
+	{
+		"checkInTime": "2023-05-22 10:51:41",
+		"checkOutTime": "2023-05-22 14:14:28",
+		"userName": "root",
+		"checkInStatus": "遲到",
+		"checkOutStatus": "正常"
+	},
+	{
+		"checkInTime": "2023-05-23 10:51:41",
+		"checkOutTime": "2023-05-23 14:14:28",
+		"userName": "root",
+		"checkInStatus": "正常",
 		"checkOutStatus": "早退"
 	}
 ]

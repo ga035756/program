@@ -10,6 +10,7 @@
   <title>Login page</title>
   <link rel="stylesheet" href="./css/bootstrap.css">
   <script src="./js/bootstrap.min.js"></script>
+  <script src="./js/bootstrap.bundle.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <style>
@@ -92,10 +93,24 @@
   <link href="../css/sign-in.css" rel="stylesheet">
 </head>
 
-<body class="text-center bg-info">
-  <main class="form-signin w-50 m-auto">
-    <form>
-      <img class="mb-4" src="./img/logo.jpg" alt="" width="72" height="72">
+<body class="text-center">
+  <div class="w-100 h-100 ">
+  <div class="carousel slide w-100 h-100" data-bs-ride="carousel" data-bs-interval="2000" style="position:absolute;">
+    <div class="carousel-inner">
+      <div class="carousel-item active" >
+          <img src="./img/bg_1.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="./img/bg_2.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="./img/bg_3.jpg" class="d-block w-100" alt="...">
+      </div>
+    </div>
+  </div>
+  <main class="form-signin m-auto " >
+    <form class="w-50 h-50" style="position: absolute;">
+      <img class="mb-4" src="./img/logo.jpg" alt="" width="200" height="200">
       <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
       <div class="form-floating">
@@ -125,7 +140,7 @@
     <div class="modal-dialog">
       <div class="modal-content ">
         <div class="modal-header bg-danger text-white">
-          <h1 class="modal-title fs-5 " id="staticBackdropLabel">111</h1>
+          <h1 class="modal-title fs-5 " id="staticBackdropLabel"></h1>
           <button type="button" id="btnClose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -139,6 +154,7 @@
     </div>
   </div>
   <script>
+    // $("#indexBackgroud").careusel()
     async function check() {
       let loginConfig = {}
       var userDataGetResult = await $.ajax({
