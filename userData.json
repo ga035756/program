@@ -33,5 +33,10 @@
 		"userName": "test3",
 		"passWord": "abcd1234",
 		"isSuperVisor": 0
+	},
+	{
+		"userName": "test3",
+		"passWord": "abcd1234",
+		"isSuperVisor": 0
 	}
 ]
