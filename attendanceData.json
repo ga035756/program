@@ -100,5 +100,12 @@
 		"userName": "root",
 		"checkInStatus": "正常",
 		"checkOutStatus": "早退"
+	},
+	{
+		"checkInTime": "2023-05-30 10:30:31",
+		"checkOutTime": "2023-05-30 10:30:36",
+		"userName": "test",
+		"checkInStatus": "遲到",
+		"checkOutStatus": "早退"
 	}
 ]
